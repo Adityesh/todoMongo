@@ -1,0 +1,18 @@
+{
+  "name": "todomongo",
+  "version": "0.0.1",
+  "description": "Create to do lists",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server.js"
+  },
+  "author": "Adityesh Mishra",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.22.0",
+    "mongoose": "^5.9.10"
+  }
+}
