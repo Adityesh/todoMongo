@@ -37,7 +37,7 @@ router.get('/items',(req,res) => {
             })} else {
                 res.status(200).json({
                     error : false,
-                    message : "Item found in the database",
+                    message : "Item found in the database.",
                     item
                 })
             }
@@ -126,7 +126,7 @@ router.put('/items',async (req,res) => {
                     if(err) console.log(err)
                     res.status(201).json({
                         error :false,
-                        message : "Successfully updated."
+                        message : "Successfully updated todo-status."
                     })
                 })
             }
@@ -138,7 +138,7 @@ router.put('/items',async (req,res) => {
                     if(err) console.log(err)
                     res.status(201).json({
                         error :false,
-                        message : "Successfully updated."
+                        message : "Successfully updated todo-name."
                     })
                 })
             } else if(!updatedName && !completed) {
@@ -155,7 +155,7 @@ router.put('/items',async (req,res) => {
                     if(err) console.log(err)
                     res.status(201).json({
                         error :false,
-                        message : "Successfully updated."
+                        message : "Successfully updated status and name."
                     })
                 })
             }
