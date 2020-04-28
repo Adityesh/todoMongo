@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose')
 const Item = require('../model/Item')
+const dotenv = require('dotenv').config()
 const db = mongoose.connection;
 
 mongoose.connect(process.env.DB,{useNewUrlParser : true, useUnifiedTopology : true,useFindAndModify : false})
@@ -46,42 +47,50 @@ router.get('/items',(req,res) => {
     
 })
 
-router.post('/new',(req,res) => {
-    
-    if(!req.body.name) {
-        res.status(404).json({
+router.post('/new',async (req,res) => {
+    const {name} = req.body;
+    if(!name) {
+        res.status(400).json({
             error : true,
-            message : "No item to insert."
+            message : "No name provided."
+        })
+    } else {
+        await Item.findOne({name},async (err, todo) => {
+            if(err) console.log(err)
+            if(!todo) {
+                const insertTodo = new Item({
+                    name,
+                    completed : false
+                })
+                await insertTodo.save((err, doc) => {
+                    if(err) {
+                        console.log(err)
+                        return;
+                    }
+                     res.json({
+                        error : false,
+                        message : "Inserted",
+                        doc : doc
+                    })
+                    
+                })
+            } else {
+                res.json({
+                    error : false,
+                    message : "Item already exists.",
+                })
+            }
         })
     }
 
-    Item.findOne({name : req.body.name},(err,item) => {
-        if(err) console.log(err)
-        if(!item) {
-            const newItem = new Item({
-                name : req.body.name,
-                completed : false
-            })
-            newItem.save((err,item) => {
-                res.status(201).json({
-                    error : false,
-                    message : "Item successfully created.",
-                })
-                db.close()
-            })
-        } else {
-            res.status(400).json({
-                error : true,
-                message : "Item already exists."
-            })
-        }
-    })
+    
 })
 
 router.delete('/items',(req,res) => {
     const nameToDel = req.query.name;
     if(!nameToDel) {
-        Item.findOneAndDelete({},(err,items) => {
+        Item.remove({},(err,items) => {
+            
             res.status(201).json({
                 error : false,
                 message : "All items deleted."

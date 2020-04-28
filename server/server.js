@@ -5,12 +5,13 @@ const dotenv = require('dotenv').config()
 const mongoose = require('mongoose');
 const routes = require('./controller/api')
 const bodyParser = require('body-parser')
+const cors = require('cors')
+const nocache = require('nocache')
 
-
-
-// app.use(helmet());
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended : false}))
+app.use(cors())
+app.use(nocache())
 
 
 
